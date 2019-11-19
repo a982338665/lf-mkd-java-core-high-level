@@ -40,10 +40,11 @@ public class GenericTest {
 	public static void errorSetFruit()
 	{
 		Pair<Apple> apples = new Pair<>(new Apple(3), new Apple(4));
+		apples.setFirst(new Apple(3));
 		Pair<? extends Fruit> fruits = apples;
-		
+		apples.setFirst(new Apple(3));
 		//fruits 里面保存的是Fruit的子类，但是不知道具体是哪个子类，所以不能保存
-		//fruits.setFirst(new Orange(5)); //编译错误
+//		fruits.setFirst(new Orange(5)); //编译错误
 	}
 	
 	public static void setFruits()

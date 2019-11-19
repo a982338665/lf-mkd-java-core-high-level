@@ -107,6 +107,30 @@
                     -抽象类有public，private，protected及不写关键字的default方法
             7.总结：建议少用，对以往接口概念有很大冲击，如果有Lambda表达式需求，可以使用
         5.try-with-resource和resource-bundle加载
+            ·程序如果打开外部资源，那么在使用后需要正确关闭
+            ·考虑异常处理，java使用try-catch-finally保证
+            ·jdk7提供try-with-resource，比try-catch-finally更简便
+                -jdk7：资源要求定义在try中，若已经在外面定义，则需要一个本地变量，例如：
+                    FileinputStream fis = ...;
+                    try(FileinputStream fis2 = fis){
+                    }catch(Exception e){
+                    }
+                -jdk9：则可以直接引用外部资源变量 例如：
+                    FileinputStream fis = ...;
+                    try(fis){
+                    }catch(Exception e){
+                    }
+            ·tr-catch-resource原理：
+                -资源对象必须实现AutoCloseable接口，即实现close方法
+                -在经过编译器后，此种方式最后仍旧会变成try-catch-finally形式
+            ·ResourceBundle文件加载：
+                -java8以前，ResourceBundle默认以ISO-8859-1方式加载Properties文件
+                    -需要利用native2ascii工具（jdk自带）对文件进行转义
+                -jdk9及以后，已经删除了native2ascii工具，新的Properties文件可以直接以UTf-8形式保存
+                    -已经利用native2ascii工具转换后的文件，不受影响，即ResourceBundle，若解析文件不是有效的UTF-8，则以ISO-8859-1方式加载
+            ·总结：
+                ·try-with-resource：jdk7及以后，资源自动关闭
+                ·ResourceBundle文件加载优化，java9以后默认以utf-8加载，之前以iso-8859-1加载
         6.var类型和switch
         
     

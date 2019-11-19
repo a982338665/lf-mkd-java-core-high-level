@@ -176,5 +176,27 @@
         ·extends限定可以有多个接口，但只能有一个类，且类必须排在第一位，逗号隔开参数
             <T extends File & Cloneable,U extends Serializable>
         ·泛型类之间的继承：
-            
+            -Pair<S>和Pair<T>没有任何关系，无论S和T之间是什么关系
+                Apple继承自Fruit
+                Orange继承自Fruit
+                //Pair<Apple> apples = new Pair<>(new Apple(3), new Apple(4));
+                //Pair<Fruit> fruits = apples;//会报错，尽管Apple继承于Fruit，但是Pair<Apple>与Pair<Orange>是没有任何关系的
+                //fruits.setFirst(new Orange(5));
+            -泛型类可以拓展或实现其他类，如ArrayList<T>实现List<T>
+                List<Orange> oranges = new ArrayList<Orange>();
+        ·上界限定符：Pair<? extends S> 表示Pair能接受的参数是S自身或其子类，只能get
+        ·下界限定符：Pair<? super S> 表示s的自身或超类 只能set
+        ·泛型PECS原则：
+            -Producer Extends：从泛型类读取T数据，不能写入，使用? extends上限通配符 
+            -Customer Super：从泛型类写入T数据，不能读取，使用? super下限通配符
+            -既要写入又要读取，则不加通配符
+        ·无限定类型的泛型：
+            ·Pair<T>
+            ·Pair<?>    无限定通配符表示任意类型，?可以放入任意值，一般不使用
+        ·总结：
+            1.Pair<S>和Pair<T>没有关系
+            2.Pair<T extends Comparable & Serializable> 限定T类型
+            3.PESC：
+                ·? extends T    只能get，不能set，只生产，不消费
+                ·? super   T    只能set，不能get，只消费，不生产
 **3.**

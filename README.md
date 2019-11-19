@@ -132,5 +132,22 @@
                 ·try-with-resource：jdk7及以后，资源自动关闭
                 ·ResourceBundle文件加载优化，java9以后默认以utf-8加载，之前以iso-8859-1加载
         6.var类型和switch
-        
+            ·var类型：
+                -每个变量在定义时就确定了类型，类型固定了就不能更改：int x =11;
+                -java10推出Var，局部变量推断：
+                    ·避免信息冗余
+                    ·对齐了变量名
+                    ·更易阅读
+                    ·本质还是强类型语言，编译器负责推断类型，并写入字节码
+                -var的限制：
+                    ·可以使用在局部变量上，非类成员变量
+                    ·可以用在for/foreach循环中
+                    ·申明时必须初始化
+                    ·不能用在方法参数和返回类型
+                    ·大面积滥用会使代码整体阅读性变差
+                    ·var只在编译时起作用，没有在字节码中引入新的内容，也没有专门的jvm指令处理var
+            ·switch-多分支选择语句
+                -支持的类型：byte/Byte，short/Short，int/Integer，char/Character，String（java7及以后），Enum（java5及以后），不支持long、float、double
+                -switch，多分支合并，采用->直接连接判定条件和动作【jdk12支持】
+                -switch，直接在表达式赋值【jdk12支持】
     

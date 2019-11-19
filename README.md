@@ -151,7 +151,7 @@
                 -switch，多分支合并，采用->直接连接判定条件和动作【jdk12支持】
                 -switch，直接在表达式赋值【jdk12支持】
     
-**1.泛型：CoreHighLevel\src\main\java\pers\li\genericity**
+**2.泛型：CoreHighLevel\src\main\java\pers\li\genericity**
 
     1.问题：
         ·存放多个不同类型的对象，在遍历时容易出现转型错误ClassCastException
@@ -161,7 +161,7 @@
         ·泛型方法：Collections.binarySearch,Arrays.sort
         ·泛型接口：List,Iterator等
     3.ArrayList源码：会用到泛型符号E
-    4.自定义泛型类设计：
+    4.自定义泛型类设计：$1
         ·ArrayList<E> E表示数据结构里的单个元素【element】
         ·HashMap<K,V> key和value
         ·自定义泛型变量常用T，T表示Template
@@ -169,3 +169,12 @@
             -多个字母表示多个引入类型，如<T,U>
             -引入类型可以修饰成员变量，局部变量，参数，返回值
             -没有专门的template关键字
+    5.泛型类型限定：$2 CoreHighLevel\src\main\java\pers\li\genericity\limits
+        ·对泛型的类型有要求，例如T仅限于实现某接口的对象
+        ·<T extends Comparable>约定T必须是Comparable的子类
+        ·extends固定，后面可以是多个，以&拼接，如<T extends Comparable & Serializable>
+        ·extends限定可以有多个接口，但只能有一个类，且类必须排在第一位，逗号隔开参数
+            <T extends File & Cloneable,U extends Serializable>
+        ·泛型类之间的继承：
+            
+**3.**

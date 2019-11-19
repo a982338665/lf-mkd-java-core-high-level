@@ -1,4 +1,4 @@
-package pers.li.genericity.genericmethod;
+package pers.li.genericity.$1genericmethod;
 public class ArrayUtilTest {
 
 	public static void main(String[] args) {

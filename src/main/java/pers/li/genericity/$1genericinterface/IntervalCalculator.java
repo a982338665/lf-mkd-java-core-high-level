@@ -1,4 +1,4 @@
-package pers.li.genericity.genericinterface;
+package pers.li.genericity.$1genericinterface;
 
 public class IntervalCalculator implements Calculator<Interval<Integer>>{
 

@@ -1,4 +1,4 @@
-package pers.li.genericity.genericclass;
+package pers.li.genericity.$1genericclass;
 
 public class IntervalTest {
 

@@ -1,5 +1,4 @@
-package pers.li.genericity.genericinterface;
-
+package pers.li.genericity.$1genericclass;
 
 public class Interval<T> {
 

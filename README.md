@@ -419,9 +419,48 @@
                 顶行【Tools】-->【Generate javaDoc...】 -->
                 【选择输出路径】+【在Other command line arguments中添加[-encoding utf-8 -charset utf-8]】   
     5.注解的解析：
-        
-                                    
-            
-            
+        1.RetentionPolicy.RUNTIME这种策略下注解可以被JVM运行时访问到
+            -Class.getAnnotations()     获取类有哪些注解修饰
+            -Class.isAnnotation()       判断类是否有注解修饰它
+            -Class.isAnnotationPresent(Class annotationClass) 判断是否有某注解
+            -Method.getAnnotations()
+            -Method.isAnnotationPresent(Class annotationClass)
+            -Field.getAnnotations()
+            -Field.isAnnotationPresent(Class annotationClass)
+            -Constructor.getAnnotations()
+            -Constructor.isAnnotationPresent(Class annotationClass)
+        2.RetentionPolicy.CLASS:注解在class文件中，但是jvm没有加载，idea支持反编译可直接查看
+            -只能采用字节码工具进行特殊处理：如ASM工具
+        3.RetentionPolicy.SOURCE：注解在java文件中，不在class中，不会被jvm加载
+            -只有源码级别进行注解处理
+            -Java提供注解处理器来解析带注解的源码，产生新文件
+                ·注解处理器继承AbstractProcessor，重写process方法
+                ·javac -processor Processor1, Processor2,,...
+                ·编译器定位源文件的注解，然后依次启动注解处理器执行处理。如果某个注解处理器
+                    产生新的源文件，name将重复执行这个过程
+                ·注解处理器只能产生新文件，不会修改已有的源文件
+            -代码来源：java核心技术卷二，高级特性    
+    6.RUNTIME注解的实现本质：$6 https://www.icourse163.org/learn/ECNU-1206500807?tid=1206823217&from=study#/learn/content?type=detail&id=1213070105&cid=1216555199
+        1.调用路线：
+            -注解采用接口中的方法来表示变量
+            -java为注解产生一个代理类。这个代理类包括一个AnnotationInvocationHandler成员变量
+            -AnnotationInvocationHandler有一个Map的成员变量，用来存储所有注解的属性赋值
+            -在程序中，调用注解接口的方法，将会被代理类接管，然后根据方法名称，到Map拿到相应的value并返回
+        2.设计思路：
+            -注解需要随意赋值：
+                -1.注解方法表示变量：一个方法名表示一个变量名
+                -2.采用代理类拦截注解方法访问
+                -3.所有注解的赋值，都放在Map中，访问速度快
+    7.注解应用：
+        1.servlet3.0配置：
+            -Servlet是javaee最重要的元素
+            -传统是需要在web.xml里配置，3.0以后支持注解配置，更简便
+            -需要容器的支持：tomcat7.0+支持注解servlet语法
+        2.Junit
+        3.lombok:
+            @Data
+            @AllArgsConstructr
+        4.
+                
  
               

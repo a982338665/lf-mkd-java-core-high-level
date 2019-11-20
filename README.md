@@ -268,3 +268,33 @@
             ·json和java对象互转
             ·tomcat的servlet创建
         4.编译器api：
+            ·反射：
+                -可以查看对象类型标识
+                -可以动态春感觉对象，访问其属性，调用其方法
+                -前提：类（.class文件）必须存在
+            ·编译器qpi：
+                -对.java文件即时编译
+                -对字符串即时编译：把.java文件读成字符流在编译
+                -监听在编译过程中产生的警告和错误
+                -在代码中运行编译器（非 命令行调用javac命令）
+            ·JavaCompier：
+                -自java1.6推出，位于javax.tools包中
+                -可用在程序文件中国的java编译器接口（代替javac.exe）
+                -在程序中编译java文件产生.class文件
+                -run方法（继承自java.tools.Tools）：较简单。可以编译java源文件，生成class文件，但不能指定输出路径，
+                    监控错误信息，调用后就在源码所在目录生成class文件
+                -getTask方法：更强大的功能。可以编译java源文件，包括内存中的java文件（字符串），生成class文件
+            ·java编译器api的作用：
+                -javaee的jsp编译：jsp文件编译成java的servlet，然后使用java编译器api编译成class文件
+                -在线编程环境：菜鸟教程，在线写代码
+                -在线程序评判系统
+                -自动化构建和测试工具
+            ·基于JavaCompiler的集成工具：
+                -Janino：推荐使用
+                    http://janino-complier.github.io/janino
+                -InMemoryJavaCompile
+                    https://github.com/trung/inMemoryJavaCompiler
+                -Java-Runtime-Compiler
+                    http://github.com/OpenHFT/Java-Runtime-Compiler
+                -Apache Commons JCI（java compiler interface）-> 适用于jdk1.5及以前的版本
+                    http://commons.apache.org/proper/commons-jci/index.html

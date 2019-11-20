@@ -337,4 +337,61 @@
             -分离代码的耦合（高内聚，低耦合）
             -业务逻辑变化，不需要修改源代码，不用重启
             -加快编程和测试速度
+ 
+ **5.java注解：CoreHighLevel\src\main\java\pers\li\annotation**
+    
+    1.注解入门：$1
+        -从jdk1.5引入
+        -注解定义：拓展java.lang.annotation.Annotation注解接口
+        -位于源码中（代码，注释，注解），使用其他工具进行处理的标签
+        -注解用来饰程序的元素，但是不会对被修饰变量的对象有直接的影响
+        -只有通过某种配套的工具才会对注解信息进行访问和处理
+        -主要用途：
+            ·提供信息给编译器，IDE工具
+            ·可用于其他工具来产生额外的代码，配置文件等
+            ·有一些注解可在程序运行时访问，增加程序的动态性，利用反射获取注解，作统一处理
+        -jdk预定义的普通注解：
+            ·@Override  表示继承或重写
+            ·@Deprecated 表示废弃
+            ·@SuppressWarnings 表示忽略警告
+            ·@SafeVarargs 不会对不定项参数做危险操作
+            ·@FunctionInterface 申明功能性接口
+        -jdk预定义的元注解：用来修饰注解的注解
+            ·@Target        设置目标范围
+            ·@Retention     设置保持性
+            ·@Documented    文档
+            ·@Inherited     注解继承
+            ·@Repeatable    此注解可以重复修饰
+    2.java预定义的普通注解：$2
+    3.自定义注解：$3
+        -注解可以包含的类型：8种基本数据类型，String，Class，enum类型，注解类型，由以上类型组成的数组
+            public @interface BugReport {
+            	enum Status {UNCONFIRMED, CONFIRMED, FIXED, NOTABUG};
+            	boolean showStopper() default true;
+            	String assiganedTo() default "[none]";
+            	Status status() default Status.UNCONFIRMED;
+            	String[] reportedBy();
+            }
+        -注解使用：
+             public @interface Test {}     @Test
+             public @interface Test {
+                int value() default 0;     @Test 或 @Test(5) 或 @Test(value=5) 
+             }     
+             public @interface Test {
+                int a() default 0;         @Test 或 @Test(a=1) 或 @Test(a=5,b=5) ,不能写 @Test(1,2),无法识别
+                int b() default 0;
+             }     
+        -注解使用的位置：注解上的注解 --模拟junit测试用例
+            -@Target可以限定位置：指明该注解可以用在哪个位置，允许的位置如下
+                -包
+                -类
+                -接口
+                -方法
+                -构造器
+                -成员变量
+                -局部变量，形参变量，类型参数   
+                        
+            
+            
+ 
               

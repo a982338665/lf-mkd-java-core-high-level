@@ -390,7 +390,37 @@
                 -构造器
                 -成员变量
                 -局部变量，形参变量，类型参数   
-                        
+    4.java预定义的元注解：修饰注解的注解：$4
+        -@Retention（保留）：
+            -示例：@Retention(RetentionPolicy.RUNTIME)
+            -这个注解用来修饰其他注解存在的范围
+            -RetentionPolicy.SOURCE 注解仅存在源码，不在class，一般是IDE工具用来进行代码分析，监控等
+            -RetentionPolicy.CLASS  这是默认的注解保留策略，注解存在于class文件，但是不能被JVM加载
+            -RetentionPolicy.RUNTIME这种策略下注解可以被JVM运行时访问到，通常情况下可以结合反射搞事情
+        -@Target ：设置目标范围，注解作用于什么位置
+            -@Target(ElementType.ANNOTATION_TYPE)   修饰别的注解
+            -@Target(ElementType.CONSTRUCTOR)       修饰构造函数
+            -@Target(ElementType.FIELD)             修饰变量
+            -@Target(ElementType.LOCAL_VARIABLE)    修饰方法内的局部变量
+            -@Target(ElementType.METHOD)            修饰方法
+            -@Target(ElementType.PACKAGE)           修饰包
+            -@Target(ElementType.PARAMETER)         修饰方法参数列表内的参数
+            -@Target(ElementType.TYPE)              用于描述类、接口(包括注解类型) 或enum声明
+        -@Inherited:继承
+            -让一个类和他的子类都包含某个注解
+            -普通的注解没有继承功能
+        -@Repeatable
+            -jdk1.8引入
+            -表示被修饰的注解可以重复应用标注
+            -需要定义注解和容器注解
+        -Documented:
+            -这个注解可以被javadoc工具解析，形成帮助文档     
+            -idea生成javadoc的方式：
+                顶行【Tools】-->【Generate javaDoc...】 -->
+                【选择输出路径】+【在Other command line arguments中添加[-encoding utf-8 -charset utf-8]】   
+    5.注解的解析：
+        
+                                    
             
             
  

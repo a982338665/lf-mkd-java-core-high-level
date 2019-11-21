@@ -451,6 +451,16 @@
                 -1.注解方法表示变量：一个方法名表示一个变量名
                 -2.采用代理类拦截注解方法访问
                 -3.所有注解的赋值，都放在Map中，访问速度快
+        3.java自带的反编译工具：
+            cmd命令行 --> javap -c 【类（不带后缀）】 javap -c Fruit
+        4.注解的本质：
+            1.编译注解：D:\go-20191030\CoreHighLevel\src\main\java\pers\li\annotation\$6>javac Fruit.java
+            2.反编译注解：D:\go-20191030\CoreHighLevel\src\main\java\pers\li\annotation\$6>javap -c Fruit.class
+                public interface pers.li.annotation.$6.Fruit extends java.lang.annotation.Annotation {
+                  public abstract java.lang.String name();
+                }
+            3.反编译之后可以看见：字节码中没有@interface，只有一个接口
+            
     7.注解应用：
         1.servlet3.0配置：
             -Servlet是javaee最重要的元素

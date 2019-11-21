@@ -5,6 +5,7 @@ import java.lang.reflect.Proxy;
 //动态代理模式
 public class DynamicProxyDemo {
     public static void main(String[] args) {
+        System.setProperty("jdk.proxy.ProxyGenerator.saveGeneratedFiles", "true");
     	//1.创建目标对象
     	SubjectImpl realSubject = new SubjectImpl();    
     	

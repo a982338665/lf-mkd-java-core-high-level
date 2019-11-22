@@ -23,18 +23,14 @@ public class Main {
     	InvocationHandler h = Proxy.getInvocationHandler(fruit);
         System.out.println(h.getClass().getName());
         //sun.reflect.annotation.AnnotationInvocationHandler 主要处理注解 位于rt.jar包中
-
         Field f = h.getClass().getDeclaredField("memberValues");
         f.setAccessible(true);
-
         Map memberValues = (Map) f.get(h);
-
         //only contain "name" key
         for(Object o : memberValues.keySet())
         {
         	System.out.println(o.toString());
         }
-
         //change the value of "name" key
         memberValues.put("name", "Pear");
         System.out.println(fruit.name()); //Pear

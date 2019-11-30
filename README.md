@@ -610,6 +610,13 @@
                 -Function<T,R> 接收一个参数返回一个值
                 -Supplier<T>   数据工厂:没有参数，但是返回一个值
     3.方法引用：
+        1.类::静态方法，如Math.abs方法
+            -等价于提供方法参数的Lambda表达式
+            -Math::abs 等价于 x -> Math.abs(x)
+        2.类::实例方法，如String::compareToIgnoreCase方法
+            -第一个参数将变成方法的执行体
+            -String::compareToIgnoreCase等价于(x,y)->x.compareToIgnoreCase(y)
+        3....
     
     4.表达式应用：
     

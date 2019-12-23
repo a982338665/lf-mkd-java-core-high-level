@@ -621,6 +621,54 @@
     4.表达式应用：
         1.
     
-                       
- 
+**8.java stream流：pers.li.streams**
+    
+    1.概述：
+        1.一个流对外提供一个接口，可以访问到一串特定的数据。流不存储元素，但是可以根据需要进行计算转化
+        2.数据来源：数据结构，数组，文件等
+        3.聚合操作：刘支持想sql操作或其他函数式语言操作：如filter,map,reduce,find,match,sorted
+        4.很多流操作也是返回一个流
+        5.流操作进行迭代，用户感知不到循环遍历
+        6.流的工作流程：
+            1.流的创建
+            2.流的转换，将流转换为其他流的中间操作，可包括多个步骤【惰性操作】
+            3.流的计算结果，这个操作会强制执行之前的惰性操作，这个步骤以后流就再也不用了
+    2.流的创建：
+        1.// Collection子类产生stream
+          //还有其他子类，如LinkedList,LinkedSet,TreeSet等
+          Stream<String> a1 = new ArrayList<String>().stream();
+          Stream<String> a2 = new HashSet<String>().stream();
+          // 使用Arrays.stream 转化数组为stream，第三个到第五个
+          Stream<String> b1 = Arrays.stream("a,b,c,d,e".split(","), 3, 5);
+          // 数组产生stream
+          Stream<Integer> c1 = Stream.of(new Integer[5]);
+          Stream<String> c2 = Stream.of("a,b,c".split(","));
+          Stream<String> c3 = Stream.of("a", "b", "c");
+          //空流
+          Stream<String> d1 = Stream.empty();
+          //无限流,使用generate方法，根据Lambda表达式产生
+          Stream<String> e1 = Stream.generate(()->"hello");
+          Stream<Double> e2 = Stream.generate(Math::random);
+          //无限流，使用iterate方法，第一个参数是种子
+          //第二个是Lambda表达式
+          //首位为0，步长为1，每次加1
+          Stream<BigInteger> e3 = Stream.iterate(BigInteger.ZERO, n -> n.add(BigInteger.ONE));
+          //Files的lines方法读取一个文件，产生每一行内容的Stream
+          Stream<String> contents = Files.lines(Paths.get("C:/abc.txt")); 
+          //Pattern的splitAsStream方法，根据一个正则表达式，将内容分为一个字符串的Stream
+          Stream<String> words = Pattern.compile(",").splitAsStream("a,b,c");
+          //words.forEach(System.out::println);
+        2.基本类型流：只有三种 CoreHighLevel\src\main\java\pers\li\streams\$2\BasicTypeStream.java
+            -IntStream,
+            -LongStream
+            -DoubleStream
+        3.并行流：
+            -使得所有的中间转换操作都将被序列化
+            -Collections.parallelStream()将任何集合转换为并行流
+            -Stream.parallel()方法，产生一个并行流
+            -注意：要保证传给并行流的操作不存在竞争
+    3.流的转换：
+        1.
+        2.
+        3. 
               

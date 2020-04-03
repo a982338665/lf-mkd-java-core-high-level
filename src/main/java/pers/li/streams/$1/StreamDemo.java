@@ -11,14 +11,21 @@ public class StreamDemo {
     public static void main(String[] args) {
         List<Transaction> transactions = new ArrayList<Transaction>();
         transactions.add(new Transaction(1, 100, "batch"));
+        transactions.add(new Transaction(1, 101, "batch"));
         transactions.add(new Transaction(3, 80, "grocery"));
         transactions.add(new Transaction(6, 120, "grocery"));
         transactions.add(new Transaction(7, 40, "batch"));
         transactions.add(new Transaction(10, 50, "grocery"));
 
+        List<Transaction> unique = transactions.stream().collect(
+                Collectors.collectingAndThen(
+                        Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(Transaction::getId))), ArrayList::new)
+        );
+        unique.forEach(p -> System.out.println(p));
+
         // 采用传统方法
-        traditionalMethod(transactions);
-        streamMethod(transactions);
+//        traditionalMethod(transactions);
+//        streamMethod(transactions);
     }
 
     public static void traditionalMethod(List<Transaction> transactions) {
@@ -98,4 +105,8 @@ class Transaction {
         this.type = type;
     }
 
+    @Override
+    public String toString() {
+        return id+"+"+type+"+"+value;
+    }
 }

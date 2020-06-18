@@ -9,7 +9,7 @@ public class StringOrderTest {
 		String[] planets = new String[] { 
 				"Mercury", "Venus", "Earth", "Mars", 
 				"Jupiter", "Saturn", "Uranus",
-				"Neptune" };	
+				"Neptune" };
 
 		System.out.println(Arrays.toString(planets));
 		System.out.println("=======================");

@@ -13,6 +13,7 @@ public class PractiseTest {
 
     public static void main(String[] args) {
 
+//        test.getData.apply()
         String apply = new test().getData.apply("2020-02-01 00:00:00");
         System.err.println(apply);
 

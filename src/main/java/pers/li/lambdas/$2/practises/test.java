@@ -11,7 +11,7 @@ import java.util.function.Function;
  */
 public class test {
 
-    Function<String, String> getData = s -> {
+    static Function<String, String> getData = s -> {
         return s+"|||";
     };
 

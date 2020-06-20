@@ -707,6 +707,23 @@
             ·存放到数据结构中
     6.流的应用
         -类似于sql操作，简化了串行和并行的大批量操作
+        1.Stream和循环迭代的区别：
+            Stream广泛使用Lambda表达式，只能读取外围的final或者effectively final变量，循环迭代代码可以读取、修改任意的局部变量
+            在循环迭代代码块中，可以随意break，continue，return，或者抛出异常，而lambda表达式无法完成此事
+            stream流不是淘汰循环迭代代码，而是两者相互搭配使用
+        2.注意：
+            1.一个流只能用一次，用完就没了，不能重复使用
+            2.避免创建无限流：
+                IntStream.iterate(0,i->i+1).foreach(System.out::print)      //无限流
+                IntStream.iterate(0,i->i+1).limit(10).foreach(System.out::print) //对流元素进行限制
+            3.注意流的操作顺序:先排序后limit，和先limit后排序的区别
+            4.谨慎使用并行流：
+                ·底层使用Fork-Join Pool，处理计算密集型任务【java核心技术进阶第五章】
+                ·数据量过小不使用
+                ·数据结构不易分解的不用，如LinkedList
+                ·频繁拆箱装箱不用
+                ·设计findFirst和limit的时候不用
+            5.Stream和collection可以相互转换
     
 **9.java模块化：** 
 

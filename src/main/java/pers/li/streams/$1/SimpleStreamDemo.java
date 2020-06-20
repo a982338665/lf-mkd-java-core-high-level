@@ -19,16 +19,17 @@ public class SimpleStreamDemo {
             }
         }
 
-        List<String> pList = Arrays.asList(planets);
 
+        //====================================================
+        //使用流统计长度大于5的元素个数
+        //====================================================
+        List<String> pList = Arrays.asList(planets);
         //采用流方法
         long count2 = pList.stream()
                 .filter(p -> p.length() > 5).count();
-
-        //采用并行流方法:多个cpu共同操作
+        //采用并行流方法:多个cpu共同操作：数据多的时候
         long count3 = pList.parallelStream()
                 .filter(p -> p.length() > 5).count();
-
         System.err.println(count + "|" + count2 + "|" + count3);
     }
 

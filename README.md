@@ -674,8 +674,27 @@
             ·转化计算
             ·抽取，跳过，连接
             ·其他
-        2.
-        3. 
+    4.流：Optional<T>
+        ·一个包装器对象
+        ·要么包装了类型T的对象，要么没有包装对象（还是null）
+        ·如果T有值直接返回T
+        ·如果没有T，返回一个替代物
+        ·创建：
+            of
+            empty
+            ofNullable
+        ·使用：
+            get：获取值，不安全，为null时会报错
+            orElse：获取值，为null，使用替代物的值 常用
+            orElseGet：获取值，为null，使用lambda表达式值返回 常用
+            orElseThrow：获取值，为null，抛出异常
+            ifPresent：判断是否为null，不为null返回true
+            isPresent(Consumer)：判断是否为空，不为空则进行后续Consumer操作，若为空则不进行任何操作
+            map(Function):将值传递给Function进行计算，若为空，不计算
+            
+            
+    5.流的计算结果
+    6.流的应用
     
 **9.java模块化：** 
 

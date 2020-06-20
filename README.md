@@ -691,9 +691,23 @@
             ifPresent：判断是否为null，不为null返回true
             isPresent(Consumer)：判断是否为空，不为空则进行后续Consumer操作，若为空则不进行任何操作
             map(Function):将值传递给Function进行计算，若为空，不计算
-            
-            
     5.流的计算结果
+        ·流的计算：
+            ·简单约简（聚合函数）：count/max/min...
+                1-count 计数
+                2-max(Comparator) 最大值需要比较器
+                3-min(Comparator) 最小值需要比较器
+                4-findFirst 取第一个元素
+                5-findAny   取任意一个元素
+                6-anyMatch(Predicate) 若有任意一个元素满足Predicate返回true
+                7-allMatch(Predicate) 所有满足返回true
+                8-noneMatch(Predicate) 没有任何一个满足返回true
+            ·自定义约简：reduce
+            ·查看遍历元素：iterator/foreach
+            ·存放到数据结构中
+        ·
+        ·
+        ·
     6.流的应用
     
 **9.java模块化：** 

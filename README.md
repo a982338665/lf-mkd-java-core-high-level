@@ -727,4 +727,91 @@
     
 **9.java模块化：** 
 
-    1.
+    1.java模块化概述：
+        1.jdk8及以前的开发模式
+            将所有程序的jar包，类库的jar包都放在classpath上，来运行
+        2.java Hell：
+            ·不同的jar包中，可能会有相同的类名（包名+类名）
+            ·java运行时，无法判断classpath路径上的jar有多少个不同版本的文件，java加载第一个符合名字的类
+            ·所有的jar包在classpath都会依次排开，当程序用到某个类的时候，从classpath一次去找
+                例如：Main.class需要p1.Foo类，而classpath上有foo-1.0.jar和foo-1.1.jar，当main运行时，将按照classpath顺序，加载第一个
+                        jar-1.1.0.jar的内容，而忽略后面的jar-1.1.jar的文件内容
+            ·java在运行时，加载类是依次一个一个加载，无法预判classpath路径上是否缺失了关键类
+        3.模块化必须遵循的三个原则：
+            ·强封装性：一个模块必须对其他模块隐藏其部分代码
+            ·定义良好的接口：模块必须向其他模块公开定义良好且稳定的接口
+            ·显示依赖：明确一个模块需要那些模块的支持才能完成工作
+        4.java9开始引入新的模块化系统：Jigsaw拼图
+            ·以模块为中心 
+            ·对jdk本身进行模块化
+            ·提供一个应用程序可以使用的模块系统
+            ·优点：
+                ·可靠地配置
+                ·强封装性
+                ·可拓展开发
+                ·安全性
+                ·性能优化
+        5.以java11.0.1为例
+            ·一共有71个模块
+            ·最底层的是java.base
+            ·每个模块都有明确的依赖模块，不存在循环依赖
+            ·使用java --list-module可以查看jdk的模块列表（需要jdk9及以上）
+            ·每个类都自动引用java.base模块
+            ·使用java --describe-module查看平台模块申明
+    2.java模块化创建和运行：D:\go-20191030\CoreHighLevel\src\main\java\pers\li\module
+        改版太多，暂时不用
+        
+**10.java字节码：D:\go-20191030\CoreHighLevel\src\main\java\pers\li\bytecode**        
+    
+    1.java字节码概述：
+        1.java开发过程：
+            ·编写 文本编写       .java文件
+            ·编译 javac.exe 编译 .class文件
+            ·运行 java.exe加载   .class文件运行
+        2.class文件：-字节码（bytecode）文件
+            ·class文件是java 一次编译到处运行的基础
+            ·class文件具备平台无关性，由jvm执行
+            ·每个class文件包含一个类或接口或模块的定义
+            ·class文件是一个二进制文件由jvm定义class的文件的规范
+            ·任何满足这种规范的class文件都会被jvm加载运行
+            ·class文件可以有其他语言编译生成，甚至不用程序语言直接生成
+            ·jdk版本不同，编译出来的.class文件不同，低版本编译出的class可在高版本运行，反之不可
+        3.class文件包含的内容：D:\go-20191030\CoreHighLevel\src\main\java\pers\li\bytecode\class文件内容.jpg
+        4.class文件的学习：
+            -字节码文件结构：了解各个模块组成
+            -字节码生成：javac编译器api
+            -字节码操作：利用工具对字节码进行查看和编辑
+            -字节码增强：
+                使用Instrument对字节码进行转换
+                对字节码反编译和混淆（重点：防止源码泄露）
+    2.java字节码文件构成：
+        混淆器：反编译-ProGuard，实为更换方法名称，逻辑等，使可读性变差
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        

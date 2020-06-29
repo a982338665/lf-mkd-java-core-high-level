@@ -786,6 +786,106 @@
                 对字节码反编译和混淆（重点：防止源码泄露）
     2.java字节码文件构成：
         混淆器：反编译-ProGuard，实为更换方法名称，逻辑等，使可读性变差
+       
+**11.java类加载器：D:\go-20191030\CoreHighLevel\src\main\java\pers\li\classloader**
+    
+    1.java类加载机制：
+        1.类加载过程：
+            0. 执行时，增加一个VM参数 -verbose:class,会输出，整个程序运行时的类加载顺序
+            1.程序是依靠多个java类共同协作完成的
+            2.jvm依据classpath执行的类库的顺序来查找类
+            3.潜在的问题：
+                ·如何找到正确的类：如classpath路径的前后
+                ·如何避免恶意的类，如一个假的String类
+                ·加载的顺序，如先加载父类还是子类
+        2.类加载器ClassLoader
+            1.负责查找，加载，校验字节码的应用程序
+            2.java.lang.CLassLoader：
+            3.java四级类加载器：java8之前的，java8之后拓展类加载器被重命名为Platform加载器（和java模块化有关）
+                ·启动类加载器：Bootstrap，加载系统类rt.jar
+                ·拓展类加载器：Extension，加载jre/lib/ext等文件下的java文件
+                ·应用类加载器：App,加载应用中classpath路径下的java文件
+                ·用户自定义加载器：Plugin，程序自定义
+            4.加载机制：双亲委托模型
+                -首先判断是否已经加载
+                -若无，父加载器加载
+                -若无，当前加载器加载
+                注意：可查看源码jdk8
+                    String类是在rt.jar下，由于双亲委托模型加载顺序，每次在加载类的时候，都会先找父级加载，所以在加载String类的时候，他是无法被冒充的
+                    加载的查找顺序为：Bootstrap - Extension - App
+                    此种方式有效的保证了JDK里面一些核心类的关键代码
+                类加载器是JVM生态系统的基础构成之一
+    2.java类双亲委托加载拓展：
+        1.java严格执行双亲委托机制;
+            `类先由最顶层的加载器来加载，若没有才由下级加载器加载
+            `委托是单向的，确保上层核心类的正确性
+            `但是上级类加载器所加载的类，无法访问下级类加载器所加载的类
+                ·例如：java.lang.String无法访问一个自定义的Test类
+                ·java是一个遵循契约设计的程序语言，核心类库提供接口，应用层提供实现
+                ·核心类库是由BootstrapClassLoader加载
+                ·应用层是由AppClassLoader加载
+                ·典型例子是JDBC和XML Parser等
+            ·执行java，添加虚拟机参数（VM）：-Xbootclasspath/a:path,将类路径配置为Bootstrap等级
+            ·使用ServiceLoader.load方法来加载（底层加载器所加载的类，以jdbc为例）
+            ·每个jdbc的驱动jar，里面都有一个services目录，里面有一个java.sql.Driver文件：
+                ·jar包解压后目录：mysql-connector-java-5.1.8\META-INF\services\java.sql.Driver
+                ·java.sql.Driver内容：
+                    com.mysql.jdbc.Driver 
+                ·即java.sql.Driver为接口名，其内容为实现类
+            ·ServiceLoader：
+                ·JDK1.6引入的一种新特性，用于加载服务的一种工具
+                ·服务有接口定义和具体的实现类（服务提供者）
+                ·SPI机制：Service Provider Interface
+                ·源码分析：
+                    1.加载实现类：Class.forName("com.mysql.jdbc.Driver");
+                        public class Driver extends NonRegisteringDriver implements java.sql.Driver {
+                            public Driver() throws SQLException {
+                            }
+                        
+                            static {
+                                try {
+                                    //向驱动管理注册mysql实现类
+                                    DriverManager.registerDriver(new Driver());
+                                } catch (SQLException var1) {
+                                    throw new RuntimeException("Can't register driver!");
+                                }
+                            }
+                        }
+                    2.获取连接：Connection conn = DriverManager.getConnection(url, "root", "123456");
+                        //遍历驱动管理里注册的实现类，获取连接
+                        Iterator var5 = registeredDrivers.iterator();
+                                    while(true) {
+                                        while(var5.hasNext()) {
+                                            DriverInfo aDriver = (DriverInfo)var5.next();
+                                            if (isDriverAllowed(aDriver.driver, callerCL)) {
+                                                try {
+                                                    println("    trying " + aDriver.driver.getClass().getName());
+                                                    Connection con = aDriver.driver.connect(url, info);
+                                                    if (con != null) {
+                                                        println("getConnection returning " + aDriver.driver.getClass().getName());
+                                                        return con;
+                                                    }
+                                                } catch (SQLException var8) {
+                                                    if (reason == null) {
+                                                        reason = var8;
+                                                    }
+                                                }
+                                            } else {
+                                                println("    skipping: " + aDriver.getClass().getName());
+                                            }
+                                        }
+                        
+                                        if (reason != null) {
+                                            println("getConnection failed: " + reason);
+                                            throw reason;
+                                        }
+                        
+                                        println("getConnection: no suitable driver found for " + url);
+                                        throw new SQLException("No suitable driver found for " + url, "08001");
+                                    }
+                ·实现：
+                    调用方 -> ServiceLoader.loader -> 接口 -> 本地服务发现+加载 -> 服务提供方【实体类A+实体类B】
+        2.
 
 
 

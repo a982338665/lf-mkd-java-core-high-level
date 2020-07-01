@@ -37,11 +37,11 @@ public class HelloTest {
 	public static void test2() throws Exception
 	{
 		URL url = new URL("file:C:/Users/Tom/Desktop/PMOOC11-03-First.jar");
-		
+
 		//程序运行时，添加一个classpath路径
 		URLClassLoader loader = new URLClassLoader(new URL[]{url});
 		Class<?> c = loader.loadClass("edu.ecnu.Hello");
-		
+
 		//采用反射调用
 		Method m = c.getMethod("say");
         m.invoke(c.newInstance());
@@ -55,7 +55,11 @@ public class HelloTest {
 		new HelloThread(project1, Thread.currentThread().getContextClassLoader()).start();
 		new HelloThread(project2, Thread.currentThread().getContextClassLoader()).start();
 	}
-	
+
+    /**
+     * java文件jar包热部署
+     * @throws Exception
+     */
 	public static void test4() throws Exception{
 		String file = "file:C:/Users/Tom/Desktop/PMOOC11-03.jar";
 		URL url = new URL(file);

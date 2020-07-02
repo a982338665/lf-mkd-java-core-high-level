@@ -901,8 +901,15 @@
             ·程序动态增加类加载路径，客服静态路径的缺点
             ·不同程序，线程可以有不同的加载路径，互相隔离
             ·重复加载某一个路径，实现程序热部署
-    
-
+    4.自定义类加载器：
+        1.自定义类加载器：
+            ·继承ClassLoader类
+            ·重写findClass(String clasName)方法
+            ·使用时，默认先调用loadClass(ClassName)来查看是否已经加载过，然后委托双亲加载，如果都没有，然后在通过findClass加载返回
+                -在findClass中，首先读取字节码文件，然后调用defineClass（className,bytes,off,len）将类注册到虚拟机中
+                -可以重写loadClass来打破双亲加载
+        2.
+**12.**
 
 
 

@@ -74,5 +74,11 @@ public class test {
         System.out.println("main方法的值："+value);
         changeValue2(value);
         System.out.println("main方法的值："+value);
+
+        test test = new test();
+        System.err.println(test.hashCode());
+        test = new test();
+        System.err.println(test.hashCode());
+
     }
 }

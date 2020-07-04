@@ -949,6 +949,42 @@
                 java Performance   - Oreilly
             
 **12.jvm内存管理：**
+    
+    1.JVM概述：
+        1.虚拟机：vm,Virtual Machine
+            -逻辑上，一台虚拟的计算机
+            -实际上，一个软件，能够执行一系列虚拟的计算指令，介于软件和硬件之间
+            -系统虚拟机：-桌面程序和服务器级别的
+                ·对物理计算机的仿真
+                ·如VMware,Oracle VirtualBox等
+            -软件虚拟机：
+                ·专门为单个计算程序而设计
+                ·如JVM等
+        2.java官方虚拟机发展历程：sun
+            -当今：2014年jdk1.8发布，Hotsport融合了JRockit
+        3.java常用虚拟机：
+            ·Sun/Oracle，Classic Vm/Hotsport VM/JRockit VM
+            ·IBM/Eclipse:J9 VM,https://www.eclipse.org/openj9/
+            ·OpenJDK:开源的虚拟机，https://openjdk.java.net:由此衍生出很多大公司的特定的虚拟机，如Alibaba JVM等
+                在jdk1.6的时候由Sun公司同步建立的开源项目，虚拟机开源，可拿到源码
+            ·Apache Harmony，已消亡，被OpenJdk冲击
+            ·Google Android Dalvik Vm，已消亡，被ART虚拟机顶替
+        4.Sun/Oracle和OpenJDK
+            ·Sun/Oracle:
+                -从jdk9分成LTS和non-LTS版本，LTS-long term support长期稳定版
+                -jdk11是LTS，长期稳定版，目前最新的
+                -OTN协议，个人免费使用，生产环境商用收费+长期更新
+            ·Open-JDK：
+                -GPL V2协议
+                -可以免费使用，含个人和商用
+        5.官方提供的Hotsport虚拟机构成：
+            一个java类，经过ClassLoader加载以后进入JVM里面，
+            JVM内存：所有的字节码文件，被加载进jvm内存
+            那么，有相应的执行机，有相应的执行机读取字节码文件内容，进行执行
+            最后转化为本地的方法指令进行工作
+            所有的java字节码可以跨平台使用，但是都要经过jvm解释执行
+            本次重点学习【JVM内存】，执行机及本地方法是由C语言写的，暂不关注
+    2.JVM内存分类：        
 
 
 

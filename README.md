@@ -908,8 +908,47 @@
             ·使用时，默认先调用loadClass(ClassName)来查看是否已经加载过，然后委托双亲加载，如果都没有，然后在通过findClass加载返回
                 -在findClass中，首先读取字节码文件，然后调用defineClass（className,bytes,off,len）将类注册到虚拟机中
                 -可以重写loadClass来打破双亲加载
-        2.
-**12.**
+            ·两个不同的类加载器在加载同一个类的时候，编译可通过，但是运行会报错，jvm中会把他认为是不同的两个类
+        2.总结：
+            ·jvm四级类加载器严格遵守从上到下的加载机制
+            ·自定义类加载器继承ClassLoader类，可重写loadClass和findClass方法
+            ·不同层次的类加载器加载同名的类，在jvm里面也算是不同的类
+    5.java类加载器总结：
+        1.java四级类加载器：java8之前的，java8之后拓展类加载器被重命名为Platform加载器（和java模块化有关）
+            ·启动类加载器：Bootstrap，加载系统类rt.jar
+            ·拓展类加载器：Extension，加载jre/lib/ext等文件下的java文件
+            ·应用类加载器：App,加载应用中classpath路径下的java文件
+            ·用户自定义加载器：Plugin，程序自定义
+        2.优点：
+            ·层次分明，逐级加载，确保核心类可用
+            ·兼顾静态和动态加载
+        3.java四级类加载器的动态性：
+            ·使用虚拟机参数 -Xbootclasspath，将jar或目录提高到Bootstrap等级
+            ·使用ServiceLoader和SPI机制，实现上层加载器的类，访问下层加载器的类（JDBC）
+            ·使用URLClassLoader，可以在运行时增加新的classpath路径
+            ·使用自定义的classloader，可以通过重写loadClass和findClass方法动态加载字节码，还可以在加载字节码的过程中进行修改校验等操作
+        4.jvm类装载过程：
+            ·加载-loading
+            ·链接-linking
+                验证：字节码是否满足规范要求
+                准备：分配内存，常量池初始化
+                解析：解析类，接口，字段，方法的符号引用
+            ·初始化：执行类的初始化方法
+        5.其他：
+            ·java类加载器：类加载和隔离
+            ·基于类加载器诞生OSGI（open service gataway initiative）,在OSGi容器里运行bundle，通过类加载器控制类的可见性
+            ·类加载器和模块直接的关系-java9之后
+        6.推荐：
+            ·网站：
+                jvm规范
+                oracle java文档
+            ·书籍：
+                深入理解java虚拟机 - 周志明
+                实战java虚拟机     - 葛一鸣
+                揭秘Java虚拟机     - 封亚飞
+                java Performance   - Oreilly
+            
+**12.jvm内存管理：**
 
 
 

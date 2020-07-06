@@ -1061,12 +1061,63 @@
         5.总结：
             ·jvm内存分类
             ·对照class文件，理清jvm各部分内存的作用
-    3.JVM内存参数：
-         
-
-
-
-
+    3.JVM内存参数：通过调整内存参数，使程序运行高效
+        1.JVM默认的运行参数：
+            -支持jvm运行的重要配置，根据操作系统，物理硬件不同而不同，特别是内存，机器的物理内存越多，可能有些参数就越大
+                ·两台机器安装同版本的jdk，然后运行出来的程序，他的jvm默认参数可能有所不同
+            -使用-XX:+PrintFlagsFinal 显示VM参数
+                ·完整命令：1M = 1024KB = 1024*1024B 查看堆内存大小
+                    D:\go-20191030\CoreHighLevel\src\main\java\pers\li\annotation\$6>java -XX:+PrintFlagsFinal -version | findstr HeapSize
+                        uintx ErgoHeapSizeLimit                         = 0                                   {product}
+                        uintx HeapSizePerGCThread                       = 87241520                            {product}
+                        uintx InitialHeapSize                          := 201326592                           {product} [换算：201326592b/1024/1024 = 192M ] 初始堆内存
+                        uintx LargePageHeapSizeThreshold                = 134217728                           {product} [128M] 
+                        uintx MaxHeapSize                              := 3191865344                          {product} [3044M = 2G 996M] 最大堆内存
+                    java version "1.8.0_231"
+                    Java(TM) SE Runtime Environment (build 1.8.0_231-b11)
+                    Java HotSpot(TM) 64-Bit Server VM (build 25.231-b11, mixed mode)
+                ·命令解析：
+                    1.使用管道查找堆内存大小：| findstr HeapSize
+                        findstr 对关键字的查找
+        2.程序启动的两类参数：- param.jpg
+            -程序参数：程序需要，存储在main函数的形参数组中
+            -虚拟机参数：更改默认配置，用以指导进程运行
+                · -X参数，不标准，不在所有的VM中通用 non-standard
+                · -XX参数，不稳定，容易变更  non-stable ，可能下个版本参数就被废弃了
+        3.本示例使用 JDK1.8
+            -jvm堆内存：设置最大值为20M:-Xmx20M 【HeapOOM】
+                -循环创建对象 Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+            -jvm栈内存：【JvmStackSOF】 StackOverFlowError
+                -循环调用方法 - 递归无限调用
+                -循环方法中局部变量 - 【JvmStackSOF】
+                -多线程 - 【JvmStackOOM】
+            -方法区：-XX参数命令，可能会变更，不稳定
+                -存储类信息，常量池，静态变量等
+                -1.7及以前，永久区（Perm），-XX:PermSize,-XX:MaxPermSize
+                    查看命令：java -XX:+PrintFlagsFinal -version | findstr Perm
+                -1.8及以后，元数据区，-XX:MetaspaceSize,-XX:MaxMetaspaceSize,
+                    查看命令：java -XX:+PrintFlagsFinal -version | findstr Meta
+                    D:\go-20191030\CoreHighLevel\src\main\java\pers\li\annotation\$6>java -XX:+PrintFlagsFinal -version | findstr Meta
+                        uintx InitialBootClassLoaderMetaspaceSize       = 4194304                             {product}
+                        uintx MaxMetaspaceExpansion                     = 5451776                             {product}
+                        uintx MaxMetaspaceFreeRatio                     = 70                                  {product}
+                        uintx MaxMetaspaceSize                          = 4294901760                          {product}    默认的方法区最大值：约等于4G
+                        uintx MetaspaceSize                             = 21807104                            {pd product} 默认的方法区初始大小：20.79M
+                        uintx MinMetaspaceExpansion                     = 339968                              {product}
+                        uintx MinMetaspaceFreeRatio                     = 40                                  {product}
+                         bool TraceMetadataHumongousAllocation          = false                               {product}
+                         bool UseLargePagesInMetaspace                  = false                               {product}
+                    java version "1.8.0_231"
+                    Java(TM) SE Runtime Environment (build 1.8.0_231-b11)
+                    Java HotSpot(TM) 64-Bit Server VM (build 25.231-b11, mixed mode)
+                -存储类信息，若一个项目有很多类，那么默认的方法区是否能够容纳下这么多类，所以在程序运行前，限定最大方法区大小为9M：
+                    -XX:MaxMetaspaceSize=9M 【JavaCompilerTask】在线编译类函数
+                    循环注册类，直到内存溢出 OutOfMemoryError 
+                    注意：因此在写程序时，尽量不使用import * ,因为加载的类越多，方法区所承受的压力就越大，若整个系统要依赖的jar包有几百个，每个jar有几百类，那么方法区消耗就会很快
+        4.总结：
+            ·jvm运行参数
+            ·各个区域的调优及参数配置
+    4.java对象引用：     
 
 
 

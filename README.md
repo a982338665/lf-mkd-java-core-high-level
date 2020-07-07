@@ -1268,13 +1268,18 @@
             ·-XX:NewRatio 设置老年代/新生代比例
             ·-XX:+PrintGC/-XX:+PrintGCDetails打印GC的过程信息：可以看出垃圾收集器在垃圾收集过程中内存变化情况
         2.Hotspot现有垃圾收集器：
-            ·串行收集器  Serial Collector 默认
+            ·串行收集器  Serial Collector 
             ·并行收集器  Parallel Collector   大内存可用
             ·CMS收集器 Concurrent Mark Sweep Collector java高版本
-            ·GI收集器  Garbage-First Collector  java高版本
+            ·GI收集器  Garbage-First Collector  java高版本 
             ·Z收集器   Z Garbage Collector java高版本
-                                
-
+    7.jvm内存管理总结和展望     
+        ·自己编译一个jvm
+        ·jvm的多种垃圾收集器的使用和区别
+        ·理解每一种内存分类的职责，熟悉相关参数设置
+        ·根据GC报告和VM监控。调整正确的内存分配策略，例如新生代/老生代之比
+        
+**13.java运行管理：**
 
 
 

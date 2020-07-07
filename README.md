@@ -1255,11 +1255,25 @@
                         8.所以新生代里会采用复制的算法，进行活的对象的拷贝
                 -老年代：标记清除或标记整理
                     -由于老年代的存活率非常高，所以采用标记-清除，或标记-整理的方式
+                -注意：永久代-jdk6和jdk7，jdk8的时候重命名为元数据区，里面存放的都是类结构等
         6.总结：
             理解各种垃圾收集方法的基本原理
             理解分代收集和java堆内结构
     6.JVM堆内存参数设置和GC跟踪：
-        1.                    
+        1.堆内存参数：
+            ·-Xms 初始堆大小
+            ·-Xmx 最大堆大小
+            ·-Xmn 新生代大小：包含eden,from,to
+            ·-XX:SurvivorRatio设置eden区/from(to)的比例
+            ·-XX:NewRatio 设置老年代/新生代比例
+            ·-XX:+PrintGC/-XX:+PrintGCDetails打印GC的过程信息：可以看出垃圾收集器在垃圾收集过程中内存变化情况
+        2.Hotspot现有垃圾收集器：
+            ·串行收集器  Serial Collector 默认
+            ·并行收集器  Parallel Collector   大内存可用
+            ·CMS收集器 Concurrent Mark Sweep Collector java高版本
+            ·GI收集器  Garbage-First Collector  java高版本
+            ·Z收集器   Z Garbage Collector java高版本
+                                
 
 
 

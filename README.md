@@ -1279,19 +1279,217 @@
         ·理解每一种内存分类的职责，熟悉相关参数设置
         ·根据GC报告和VM监控。调整正确的内存分配策略，例如新生代/老生代之比
         
-**13.java运行管理：**
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+**13.java运行管理：jvmrun**
+    
+    1.java运行管理概述：
+        1.OS管理：- 操作系统管理
+            ·进程级别的管理-黑盒
+            ·CPU、内存，IO等具体性能监控
+        2.JVM管理：
+            ·线程/程序级别的管理 - 白盒
+            ·查看虚拟机运行时各项信息
+            ·跟踪程序的执行过程，查看程序运行时信息
+            ·限制程序对资源的使用
+            ·将内存导出为文件具体分析
+    2.OS层管理：
+        1.不去关心jvm里面内容，当他是一个整体去管理监控
+        2.主要监控：内存，io，cpu
+        3.管理分类：- 对java进程进行管理
+            ·linux：
+                -top命令
+                -vmstat命令：
+                    ·查看系统整体的CPU，内存，IO，Swap等信息
+                    ·命令：
+                        · vmstat 1 3 【1-采样时间，表示每一秒采样一次，3-记录次数，表示需要记录3次】
+                            [root@VM_0_9_centos ~]# vmstat 1 3
+                            procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+                             r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+                             1  0      0 111428 240680 2007396    0    0     8    24    9   21  1  1 99  0  0
+                             0  0      0 110684 240680 2007468    0    0     8     0  493  660  1  1 98  1  0
+                             0  0      0 110700 240684 2007500    0    0    72   120  777 1355  1  1 98  2  0
+                -iostat命令
+                    ·查看详细io信息
+                    ·命令：
+                        · iostat -d 1 3 【1-采样时间，表示每一秒采样一次，3-记录次数，表示需要记录3次】
+                        · 命令找不到：yum install sysstat
+                -pidstat工具，多功能诊断器，可以定位到线程
+            ·windows：
+                -任务管理器
+                -perfmon工具:windows+R 输入缩写：perfmon
+                -Process Explorer 进程管理工具
+                -pslist，windows命令行工具
+    3.JDK管理工具：
+        1.jdk工具集：javaHome/bin
+            1.编译，运行工具：javac、java
+            2.打包工具：jar
+            3.文档工具：javadoc
+            4.国际化工具：native2ascii
+            5.混合编程工具：javah
+            6.反编译工具：javap
+            7.程序运行管理工具：jps/jstat/jinfo/jstack/jstatd/jcmd
+                jps:
+                    [root@VM_0_9_centos ~]# jps
+                    20860 mss-api.jar
+                    -第一个数组为PID 进程号
+                    -查看当前系统java进程信息
+                    -显示main函数所在类的名字
+                    - -m 显示进程参数
+                    - -l 显示程序全路径
+                    - -v 显示传递给java main函数参数
+                jstat：要用到jps查出来的进程号，查看某进程堆信息
+                    [root@VM_0_9_centos ~]# jstat -gc 20860
+                     S0C    S1C    S0U    S1U      EC       EU        OC         OU       MC     MU      CCSC    CCSU      YGC     YGCT    FGC    FGCT     GCT   
+                    3072.0 512.0   0.0   224.0  39424.0  30073.4   232448.0   163327.5  100224.0 96209.3 10368.0 9634.6    115    1.768     5      1.559    3.327
+                     S0C    s0大小，from区域大小，from也叫s0
+                     S1C    s1大小，to区域大小，s1 
+                     S0U    s0已使用
+                     S1U    s1已使用
+                     EC     eden大小
+                     EU     eden已使用   
+                     OC     老年代大小    
+                     OU     老年代已使用大小  
+                     MC     metaspace(元空间)的容量 (字节)
+                     MU     metaspace(元空间)目前已使用空间 (字节)
+                     CCSC   当前压缩类空间的容量 (字节)
+                     CCSU   当前压缩类空间目前已使用空间 (字节)
+                     YGC    新生代GC次数  对新生代堆进行gc。频率比较高，因为大部分对象的存活寿命较短，在新生代里被回收。性能耗费较小，edn空间不足,执行 young gc
+                     YGCT   新生代GC时间
+                     FGC    Full GC次数  全堆范围的gc。默认堆空间使用到达80%(可调整)的时候会触发fgc。以我们生产环境为例，一般比较少会触发fgc，有时10天或一周左右会有一次
+                            old空间不足，perm空间不足，调用方法System.gc() ，ygc时的悲观策略, dump live的内存信息时(jmap –dump:live)，都会执行full gc
+                     FGCT   Full GC时间  
+                     GCT    GC总耗时
+                jinfo：查看虚拟机参数,要用到jps查出来的进程号
+                    [root@VM_0_9_centos ~]# jinfo -flags 20860
+                    Attaching to process ID 20860, please wait...
+                    Debugger attached successfully.
+                    Server compiler detected.
+                    JVM version is 25.252-b09
+                    Non-default VM flags: -XX:CICompilerCount=2 -XX:InitialHeapSize=62914560 -XX:MaxHeapSize=994050048 -XX:MaxNewSize=331350016 -XX:MinHeapDeltaBytes=524288 -XX:NewSize=20971520 -XX:OldSize=41943040 -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseParallelGC 
+                    Command line:  
+                    修改参数：不是所有参数都可以通过此处修改，具体查看jinfo文档
+                        布尔值设置：jinfo -flag[+/-]<name> +为true，-为false
+                        赋值设置：jinfo -flag<name> = <name>
+                jstack：查看线程堆栈信息,查看线程拥有的锁，分析死锁原因
+                    - jstack -l <vmid>
+                    [root@VM_0_9_centos ~]# jstack -l 20860
+                    "taskExecutor-9" #50 prio=5 os_prio=0 tid=0x00007f37cc56d000 nid=0x664c waiting on condition [0x00007f37c1814000]
+                       java.lang.Thread.State: WAITING (parking)
+                    	at sun.misc.Unsafe.park(Native Method)
+                    	- parking to wait for  <0x00000000c594f378> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+                    	at java.util.concurrent.locks.LockSupport.park(LockSupport.java:175)
+                    	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2039)
+                    	at com.alibaba.druid.pool.DruidDataSource.takeLast(DruidDataSource.java:1608)
+                    	at com.alibaba.druid.pool.DruidDataSource.getConnectionInternal(DruidDataSource.java:1218)
+                jstatd：
+                    -客户机工具，可以远程查看java进程
+                    -本质上是个RMI服务器，默认驻守1099端口【RMI-分布式java程序直接相互调用的方法】
+                    -使用：
+                        -远程机器启动：jstatd -J-Djava.security.policy=e:/jstated.policy    
+                            启动需要权限支持，需要配置一个安全策略文件
+                            grant codebase "file:E:/java/jdk1.8.0.45/lib/tools.jar" {
+                                permission java.security.Allpermission;
+                            }
+                        -客户机启动jps，检查远程机器的java进程
+                            jps localhost:1099
+                jcmd：
+                    -从jdk7+新增，综合性工具
+                    -查看java进程，导出进程信息，执行gc等操作
+                    -jcmd直接查看进程
+                    -jcmd <vmid> help展示命令的参数列表
+                        [root@VM_0_9_centos ~]# jcmd 
+                        8946 sun.tools.jcmd.JCmd
+                        20860 /usr/local/project/mss-api.jar --server.port=8088
+                        [root@VM_0_9_centos ~]# jcmd 20860 vm.flags
+                        20860:
+                        java.lang.IllegalArgumentException: Unknown diagnostic command
+                        [root@VM_0_9_centos ~]# jcmd 20860 VM.flags #查看虚拟机参数
+                        20860:
+                        -XX:CICompilerCount=2 -XX:InitialHeapSize=62914560 -XX:MaxHeapSize=994050048 -XX:MaxNewSize=331350016 -XX:MinHeapDeltaBytes=524288 -XX:NewSize=20971520 -XX:OldSize=41943040 -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseParallelGC 
+                        [root@VM_0_9_centos ~]# jcmd 20860 help
+                        20860:
+                        The following commands are available:
+                        VM.native_memory
+                        ManagementAgent.stop
+                        ManagementAgent.start_local
+                        ManagementAgent.start
+                        VM.classloader_stats
+                        GC.rotate_log
+                        Thread.print
+                        GC.class_stats
+                        GC.class_histogram
+                        GC.heap_dump
+                        GC.finalizer_info
+                        GC.heap_info
+                        GC.run_finalization
+                        GC.run
+                        VM.uptime
+                        VM.dynlibs
+                        VM.flags
+                        VM.system_properties
+                        VM.command_line
+                        VM.version
+                        help
+                        
+                        For more information about a specific command use 'help <command>'.
+    4.可视化管理工具：
+        -JConsole：-jdk自带
+            -cmd命令行：JConsole
+            -监管本地java进程
+            -监管远程java进程：需要远程进程启动开启JMX服务
+        -Visual VM：-jdk自带
+            -jdk7发布
+            -可以查看，统计，支持插件拓展
+            -cmd命令行：jvisualvm
+        -Mission Control
+            -源自于JRocket JDK
+            -自Oracle jdk 7u40发行版加入
+            -文件位于： %JAVA_HOME%/bin/jmc
+            -带有商业特性
+            -cmd：jmc
+    5.堆文件分析：
+        -jmap:
+            ·jdk自带的命令
+            ·可以统计堆内对象实例
+                · jmap -histo 20860 > jmap.txt
+            ·可以生成堆内存的 dump文件
+                · jmap -dump:format=b,file=/root/jmap.hprof  20860
+        -jhat：
+            ·JDK自带的工具，自JDK9开始，被Visual VM代替,jdk9之前是有此命令的
+            ·解析hprof文件，通过http方式进行展示
+            ·jhat e:/jmap.hprof 
+            ·执行完命令后，结果以http形式展示：localhost:7000
+            ·支持OQL语句：类sql语法，可以快速查询对象
+        -Visual VM分析hprof文件
+        -是有Eclipse MAT分析堆文件：可独立运行，可作为插件运行
+    6.JMX：对程序管理的自定义拓展 [java Management eXtensions]
+        -JMX是一个为应用程序植入管理功能的框架
+        -用户可以在任何java应用程序中使用这些代理和服务实现管理
+        -java vm就是构建在JMX上
+        -jmx服务，可以通过外部轻松管理程序内容
+        -启动main函数：
+            打开jconsole，进行连接
+        -jmx优点：
+            ·不需要很大成本即可管理应用程序
+            ·提供一套标准化方法来管理基于java的应用程序，系统，网络
+            ·被用来作为jvm的外在管理方式
+            ·提供了一个可拓展，动态的管理架构
+            ·充分利用已有的java技术
+            ·容易和现有的管理技术进行集成
+    7.java运行安全：
+        1.安全问题：- 外面包一层，让程序在适当范围内活动
+            ·java程序来源繁杂：
+                -自定义类
+                -第三方jar包
+                -网络下载 applet，RMI等
+            ·java程序运行：
+                -非法访问目录
+                -打开socket连接
+                -退出虚拟机
+        2.java提供安全管理器：
+            -对程序的行为进行安全判定，违反则报错
+            -加载安全策略文件：一个权限集合，包含各种权限，规定哪些程序可做哪些功能
+            -默认情况，普通程序不加载安全管理器
+            -启用安全管理器：
+                ·程序中加载：System.setSecurityManager(new SecurityManager());
+                ·java -Djava.security.manager -Djava.security.policy HelloWorld
         

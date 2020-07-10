@@ -1492,4 +1492,4 @@
             -启用安全管理器：
                 ·程序中加载：System.setSecurityManager(new SecurityManager());
                 ·java -Djava.security.manager -Djava.security.policy HelloWorld
-        
+         

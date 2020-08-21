@@ -346,6 +346,11 @@
             -分离代码的耦合（高内聚，低耦合）
             -业务逻辑变化，不需要修改源代码，不用重启
             -加快编程和测试速度
+        -4.jdk代理和cglib代理文件打印问题：
+            //jdk代理
+            System.setProperty("jdk.proxy.ProxyGenerator.saveGeneratedFiles", "true");
+            //cglib代理
+            System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "./");
  
  **5.java注解：CoreHighLevel\src\main\java\pers\li\annotation**
     

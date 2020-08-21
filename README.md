@@ -347,8 +347,10 @@
             -业务逻辑变化，不需要修改源代码，不用重启
             -加快编程和测试速度
         -4.jdk代理和cglib代理文件打印问题：
-            //jdk代理
+            //jdk代理-设置将代理类生成出来 jdk>8使用
             System.setProperty("jdk.proxy.ProxyGenerator.saveGeneratedFiles", "true");
+            //jdk代理-jdk<=8 
+            System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles","true");
             //cglib代理
             System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "./");
  
